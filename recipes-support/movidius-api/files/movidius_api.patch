@@ -1,0 +1,29 @@
+From 8deb2c659b57baa9dfa86d2fcb1329fedc77e702 Mon Sep 17 00:00:00 2001
+From: Mark Asselstine <mark.asselstine@windriver.com>
+Date: Thu, 22 Mar 2018 13:16:23 -0400
+Subject: [PATCH] api: delay device access
+
+In containers it seems access is slightly delayed so we need to give
+ourselves more time.
+
+Signed-off-by: Mark Asselstine <mark.asselstine@windriver.com>
+---
+ api/src/mvnc_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/api/src/mvnc_api.c b/api/src/mvnc_api.c
+index 2975836..5ad75bd 100644
+--- a/api/src/mvnc_api.c
++++ b/api/src/mvnc_api.c
+@@ -295,7 +295,7 @@ mvncStatus mvncOpenDevice(const char *name, void **deviceHandle)
+ 			}
+ 		}
+ 		// Error opening it, continue searching
+-		usleep(10000);
++		usleep(1000000);
+ 	}
+ 	free(temp);
+ 	pthread_mutex_unlock(&mm);
+-- 
+2.7.4
+

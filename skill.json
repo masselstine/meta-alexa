@@ -1,0 +1,138 @@
+{
+    "interactionModel": {
+        "languageModel": {
+            "invocationName": "pulsar",
+            "intents": [
+                {
+                    "name": "AMAZON.CancelIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.HelpIntent",
+                    "samples": []
+                },
+                {
+                    "name": "AMAZON.StopIntent",
+                    "samples": []
+                },
+                {
+                    "name": "container_list",
+                    "slots": [],
+                    "samples": [
+                        "list containers",
+                        "what containers are installed",
+                        "list installed containers"
+                    ]
+                },
+                {
+                    "name": "install_container",
+                    "slots": [
+                        {
+                            "name": "container_name",
+                            "type": "container_name"
+                        }
+                    ],
+                    "samples": [
+                        "install the {container_name}",
+                        "fetch {container_name}",
+                        "get {container_name}",
+                        "install {container_name}",
+                        "install container {container_name}",
+                        "install the {container_name} container",
+                        "fetch the {container_name} container",
+                        "get the {container_name} container"
+                    ]
+                },
+                {
+                    "name": "delete_container",
+                    "slots": [
+                        {
+                            "name": "container_name",
+                            "type": "container_name"
+                        }
+                    ],
+                    "samples": [
+                        "delete the {container_name}",
+                        "delete {container_name}",
+                        "remove {container_name}",
+                        "destroy {container_name}",
+                        "delete container {container_name}",
+                        "remove container {container_name}",
+                        "destroy container {container_name}",
+                        "delete the {container_name} container",
+                        "remove the {container_name} container",
+                        "destroy the {container_name} container"
+                    ]
+                },
+                {
+                    "name": "start_container",
+                    "slots": [
+                        {
+                            "name": "container_name",
+                            "type": "container_name"
+                        }
+                    ],
+                    "samples": [
+                        "start the {container_name}",
+                        "start the {container_name} container",
+                        "start the container named {container_name}",
+                        "start the container {container_name}",
+                        "start container {container_name}",
+                        "start container named {container_name}"
+                    ]
+                },
+                {
+                    "name": "stop_container",
+                    "slots": [
+                        {
+                            "name": "container_name",
+                            "type": "container_name"
+                        }
+                    ],
+                    "samples": [
+                        "stop the {container_name}",
+                        "stop the {container_name} container",
+                        "stop the container name {container_name}",
+                        "stop the container {container_name}",
+                        "stop container named {container_name}",
+                        "stop container {container_name}"
+                    ]
+                },
+                {
+                    "name": "container_state",
+                    "slots": [
+                        {
+                            "name": "container_name",
+                            "type": "container_name"
+                        }
+                    ],
+                    "samples": [
+                        "what is the state of the {container_name}",
+                        "what is the status of the {container_name}",
+                        "what is the status of {container_name}",
+                        "what is the status of the {container_name} container",
+                        "what is the state of the {container_name} container",
+                        "what is the state of {container_name}"
+                    ]
+                }
+            ],
+            "types": [
+                {
+                    "name": "container_name",
+                    "values": [
+                        {
+                            "name": {
+                                "value": "pot-watcher"
+                            }
+                        },
+                        {
+                            "name": {
+                                "value": "debian"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}

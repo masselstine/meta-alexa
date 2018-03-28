@@ -1,0 +1,13 @@
+NOTES:
+
+1) Need to expose the /dev/bus to the container
+root@cube-dom0:~# c3 stop cube-desktop
+root@cube-dom0:~# c3 cfg -v link localhost:bus cube-desktop:/dev/bus
+root@cube-dom0:~# c3 cfg gen cube-desktop
+root@cube-dom0:~# c3 start cube-desktop
+
+2) pot-watch .c3 file
+c3-ctl add -n pot-watcher docker://<registry>/pot-watcher
+c3-cfg -v link localhost:bus pot-watcher:/dev/bus
+c3-cfg set -n pot-watcher app:/bin/bash
+c3-cfg gen pot-watcher

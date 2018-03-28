@@ -1,0 +1,26 @@
+From b83b283b16f3b642aca14adf3f324f0bf7a41191 Mon Sep 17 00:00:00 2001
+From: Mark Asselstine <mark.asselstine@windriver.com>
+Date: Thu, 22 Mar 2018 16:52:26 -0400
+Subject: [PATCH] Fixup cross compilation
+
+Signed-off-by: Mark Asselstine <mark.asselstine@windriver.com>
+---
+ apps/hello_ncs_cpp/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/apps/hello_ncs_cpp/Makefile b/apps/hello_ncs_cpp/Makefile
+index a3e6893..5fb1977 100644
+--- a/apps/hello_ncs_cpp/Makefile
++++ b/apps/hello_ncs_cpp/Makefile
+@@ -8,7 +8,7 @@ all: hello_ncs_cpp
+ .PHONY:	hello_ncs_cpp
+ hello_ncs_cpp: 
+ 	@echo "\nmaking hello_ncs_cpp"
+-	g++ cpp/hello_ncs.cpp -o cpp/hello_ncs_cpp -lmvnc
++	$(CXX) cpp/hello_ncs.cpp -o cpp/hello_ncs_cpp -l:libmvnc.so.0
+ 	@echo "Created cpp/hello_ncs_cpp executable"
+ 
+ .PHONY: run
+-- 
+2.7.4
+

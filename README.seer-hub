@@ -1,0 +1,57 @@
+                              overc-seer-hub
+			     ----------------
+
+The 'overc-seer-hub' implements an Alexa 'endpoint'. The endpoint is
+implemented as a python application (overc-seer-hub.py), making use of
+the open source python-flask-ask python package. When an utterance is
+received by Alexa for our skill it is associated to an intent and
+forwarded to the endpoint. The endpoint application defines functions
+for each intent, thus allowing us to execute specific commands based
+on the intent and associated variable (such as a container name).
+
+For the demo we use an external (to Wind River) server with reverse
+proxy and an ssh tunnel to avoid having to implement a complete device
+server. This means that for every device we must have a dedicated port
+on the server and every device must have its own skill defined.
+
+
+I) Build
+========
+Build 'overc-seer-hub' image using 'bitbake overc-seer-hub' or fetch
+it from the registry using the following seer-hub.c3 file and
+c3-construct from dom0.
+
+NOTE: We don't list the registry here since the image contains private
+keys.
+
+
+II) Configuration
+=================
+The container entry point must be set:
+c3 cfg -n seer-hub set app:/root/entrypoint.sh
+
+The SEER_ENDPOINT_PORT container env variable must be set:
+c3 cfg -n seer-hub set cube.env:SEER_ENDPOINT_PORT=9003
+
+To have the container start automatically after reboot:
+c3 cfg -n seer-hub set autostart:dom0
+
+After modifying any 'cfg' you must regenerate the configuration
+for the changes to take effect:
+c3 cfg gen seer-hub
+
+NOTE: the port must be mapped on https://home.tundrafam.ca and is
+prearranged with the server owner. If this was not a demo the methods
+used would be completely different than what we have done here and the
+device would register with a server and the server would also be the
+single Alexa endpoint for *all* devices. Similar to what you do with a
+Nest or other Alexa aware devices.
+
+
+III) Setup
+==========
+You need to update the cube-cmd-server perms to allow the hub
+to manipulate containers on the system. This can be done by
+running the following in dom0:
+
+/opt/container/seer-hub/rootfs/root/add-dom0-perms.sh

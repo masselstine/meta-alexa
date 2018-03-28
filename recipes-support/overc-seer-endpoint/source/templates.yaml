@@ -1,0 +1,11 @@
+welcome: Welcome to OverC, what would you like me to do?
+status: The following containers are installed on the target system,,,
+install: The XXX container is being installed.
+delete: The XXX container is being deleted.
+start: The XXX container is being started.
+stop: The XXX container is being stopped.
+running: is running
+available: is available
+created: is being created
+container: container
+list_error: Unable to fetch list of containers.

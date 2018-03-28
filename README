@@ -1,0 +1,65 @@
+This README file contains information on the contents of the
+layers/meta-alexa layer.
+
+Please see the corresponding sections below for details.
+
+Dependencies
+============
+
+  URI: https://github.com/WindRiver-OpenSourceLabs/wr-core
+  branch: pulsar-x
+
+Patches
+=======
+
+No patches are accepted at this time.
+
+Maintainer: Mark Asselstine <asselsm@gmail.com>
+
+Table of Contents
+=================
+
+  I. Adding the layers/meta-alexa layer to your build
+ II. Alexa Skill Definition
+III. Misc
+
+
+I. Adding the layers/meta-alexa layer to your build
+=================================================
+
+Run 'bitbake-layers add-layer layers/meta-alexa'. In most cases
+building the container yourself is unnecessary, pulling the prebuilt
+container from a container registry is the preferred approach.
+
+
+II. Alexa Skill Definition
+==========================
+
+You must first ensure you are registered as an Alexa Developer
+(https://developer.amazon.com/) and are familiar with the Alexa Skills
+Kit before you continue.
+
+In order to make use of the overc-seer-hub you must define an Alexa
+skill in the Alexa developer console.
+
+1)  From the Alexa console select "Create Skill"
+2)  Enter a skill name "Pulsar"
+3)  Select "Next"
+4)  Select the "Custom" for the model type
+5)  Select "Create Skill"
+6)  Select "Invocation" (this is what is said to open your skill)
+7)  Enter "Pulsar" or whatever one or two words you want
+8)  Select the "JSON Editor"
+9)  Cut and paste the contents of skill.json in the editor
+10) Select "Endpoint"
+11) Select "HTTPS"
+12) Fill in your endpoint details for the "Default Region"
+13) Build your skill
+
+
+II. Misc
+========
+
+The 'overc-seer-hub' and 'pot-watcher' containers must be configured
+properly before use, please review their respective README files for
+specific details for each of these containers.
