@@ -1,13 +1,89 @@
-NOTES:
+                              pot-watcher
+			     -------------
 
-1) Need to expose the /dev/bus to the container
-root@cube-dom0:~# c3 stop cube-desktop
-root@cube-dom0:~# c3 cfg -v link localhost:bus cube-desktop:/dev/bus
-root@cube-dom0:~# c3 cfg gen cube-desktop
-root@cube-dom0:~# c3 start cube-desktop
+The 'pot-watcher' image implements a container which will utilize a
+webcam and the Movidius Neural Compute Stick (NCS) to capture and
+classify images as either "boiling" or "not boiling" along with a %
+certainty of each category. When an image is captured via the webcam
+and classified as "boiling" with a certainty above a defined
+threshold the 'cube-desktop' container will be used to emit an alarm.
 
-2) pot-watch .c3 file
-c3-ctl add -n pot-watcher docker://<registry>/pot-watcher
-c3-cfg -v link localhost:bus pot-watcher:/dev/bus
-c3-cfg set -n pot-watcher app:/bin/bash
-c3-cfg gen pot-watcher
+The 'graph' file included in this layer and used by the Movidius is a
+fine tuned version of the GoogLeNet model.
+
+
+I) Build
+========
+
+Build the 'pot-watcher' image using 'bitbake pot-watcher' or fetch it
+from the registry using the pot-watcher.c3 file and c3-construct from
+dom0.
+
+NOTE: We don't list the registry here since some images contains
+private keys.
+
+
+II) Configuration
+=================
+
+1) In order to use the Movidius NCS in a container we must 'link'
+/dev/bus from the cube-desktop container to our container. This is
+accomplished with the following c3 commands in dom0:
+
+c3 cfg -v link localhost:bus cube-desktop:/dev/bus
+c3 cfg -v link localhost:bus pot-watcher:/dev/bus
+
+As with any configuration changes this must be followed by 'c3 gen'
+and a restart of the respective containers, if they are already
+running.
+
+2) You can validate the link and that the Movidius NCS is functional
+by running the hello_ncs_py or hello_ncs_cpp apps in the ncappzoo. You
+will need to change the container "app" otherwise the pot-watcher will
+already be running on container startup.
+
+c3 cfg set -n pot-watcher app:/bin/bash
+c3 cfg gen pot-watcher
+c3 start pot-watcher
+c3 -i pot-watcher:/bin/bash
+# cd opt/ncappzoo/apps/hello_ncs_cpp/cpp
+# ./hello_ncs_cpp
+Hello NCS! Device opened normally.
+Goodbye NCS!  Device Closed normally.
+NCS device working.
+
+Don't forget to switch the 'app' back afterwards
+c3 stop pot-watcher
+c3 cfg set -n pot-watcher app:/root/entrypoint.sh
+c3 cfg gen pot-watcher
+
+3) Since the pot-watcher uses cube-desktop to play the alarm sound
+files these must be copied to cube-desktop. This is done via a
+setup.sh script from dom0. This also installs a few python3
+dependencies, via pip3, which we didn't have time to create recipes
+for
+
+/opt/container/seer-hub/rootfs/root/setup.sh
+
+
+III) Movidius 'graph'
+=====================
+
+The pot-watcher container includes a custom 'graph' file which is run
+on the Movidius NCS and has been created with the express intent of
+categorizing "boiling" and "not boiling" images. This file is created
+using the full Movidius SDK and the mvNCCompile utility the SDK
+provides. The input to mvNCCompile is a weighted Caffe
+(http://caffe.berkeleyvision.org/) model based off of a pretrained
+GoogLeNet model which is then fine tuned for our two categories,
+ie. some layers' weights are dropped and the model then retrained with
+images from the two new categories. For information on models such as
+GoogLeNet or VGG16, what fine tuning is or how to retrain a model it
+is recommended to follow the Deep Learning Part 1
+(http://www.fast.ai/). There are specific instructions found here
+https://movidius.github.io/blog/deploying-custom-caffe-models/ which
+roughly form the steps used to create the 'graph' file used.
+
+Training was completed on an AWS GPU instance with 110 images for each
+category. This was good enough for a demo but for a proper deployment
+training would be done with 1000s of images of each category.

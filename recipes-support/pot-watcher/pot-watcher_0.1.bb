@@ -8,6 +8,9 @@ SRC_URI += " \
     file://pot-watcher.py \
     file://play-sound.py \
     file://setup.sh \
+    file://beedoo.wav \
+    file://cap.py \
+    file://entrypoint.sh \
 "
 
 RDEPENDS_${PN} += " \
@@ -34,6 +37,9 @@ do_install() {
     install -m 755 ${S}/pot-watcher.py ${DEST}/
     install -m 755 ${S}/play-sound.py ${DEST}/
     install -m 755 ${S}/setup.sh ${DEST}/
+    install -m 755 ${S}/cap.py ${DEST}/
+    install -m 644 ${S}/beedoo.wav ${DEST}/
+    install -m 755 ${S}/entrypoint.sh ${DEST}/
 }
 
 FILES_${PN} += " \
